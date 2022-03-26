@@ -1,0 +1,18 @@
+{
+    "dev": {
+      "driver": "pg",
+      "host": {"ENV" : "pgHost"},
+      "database": {"ENV" : "pgDatabase"},
+      "user": {"ENV" : "pgUser"},
+      "password": {"ENV" : "pgPassword"},
+      "port" : "5432"
+    },
+    "test": {
+        "driver": "pg",
+        "host": {"ENV" : "pgHost"},
+        "database": {"ENV" : "pgDatabaseTest"},
+        "user": {"ENV" : "pgUser"},
+        "password": {"ENV" : "pgPassword"},
+        "port" : "5432"
+    }
+}
