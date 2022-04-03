@@ -24,4 +24,35 @@ describe('book model for the library database', () => {
           summary: 'Adventures of a young kid'
         });
       });
+
+      it('index method should return a list of books', async () => {
+        const result = await store.getAllBooks();
+        expect(result).toEqual([{
+          id: 1,
+          title: 'Bridge to Terabithia',
+          total_pages: 250,
+          author: 'Katherine Paterson',
+          type: 'Childrens',
+          summary: 'Adventures of a young kid'
+        }]);
+      });
+    
+      it('show method should return the correct book', async () => {
+        const result = await store.show("1");
+        expect(result).toEqual({
+          id: 1,
+          title: 'Bridge to Terabithia',
+          total_pages: 250,
+          author: 'Katherine Paterson',
+          type: 'Childrens',
+          summary: 'Adventures of a young kid'
+        });
+      });
+    
+      it('delete method should remove the book', async () => {
+        store.delete("1");
+        const result = await store.getAllBooks()
+    
+        expect(result).toEqual([]);
+      });
 });

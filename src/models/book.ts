@@ -47,4 +47,18 @@ export class bookStore {
             throw new Error(`Can not add a new book: ${error}`);
         }
     }
+
+    async delete(id: string): Promise<Book> {
+        try {
+            const sql = 'DELETE FROM books WHERE id=($1)'
+            const conn = await client.connect()
+            const result = await conn.query(sql, [id])
+            const book = result.rows[0]
+             conn.release()
+        
+            return book
+        } catch (err) {
+            throw new Error(`Could not delete book ${id}. Error: ${err}`)
+        }
+    }
 }
