@@ -8,6 +8,7 @@ const pg_1 = require("pg");
 dotenv_1.default.config;
 const { pgHost, pgDatabase, pgDatabaseTest, pgUser, pgPassword, ENV } = process.env;
 let client = new pg_1.Pool();
+console.log(ENV);
 if (ENV === 'test') {
     client = new pg_1.Pool({
         host: pgHost,
