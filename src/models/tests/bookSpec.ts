@@ -7,7 +7,7 @@ describe('book model for the library database', () => {
         expect(store.getAllBooks).toBeDefined();
     });
 
-    it('create method should add a book', async () => {
+    it('should add a book', async () => {
         const result = await store.addNewBook({
           title: 'Bridge to Terabithia',
           total_pages: 250,
@@ -25,7 +25,7 @@ describe('book model for the library database', () => {
         });
       });
 
-      it('index method should return a list of books', async () => {
+      it('should return a list of books', async () => {
         const result = await store.getAllBooks();
         expect(result).toEqual([{
           id: 1,
@@ -37,7 +37,7 @@ describe('book model for the library database', () => {
         }]);
       });
     
-      it('show method should return the correct book', async () => {
+      it('should return the correct book', async () => {
         const result = await store.show("1");
         expect(result).toEqual({
           id: 1,
@@ -49,7 +49,7 @@ describe('book model for the library database', () => {
         });
       });
     
-      it('delete method should remove the book', async () => {
+      it('should remove the book', async () => {
         store.delete("1");
         const result = await store.getAllBooks()
     

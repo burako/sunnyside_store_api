@@ -38,7 +38,7 @@ export class bookStore {
     async addNewBook(book: Book) : Promise<Book> {
         try {
             const conn = await client.connect();
-            const sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES($1, $2, $3, $4) RETURNING *';
+            const sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES($1, $2, $3, $4, $5) RETURNING *';
             const result = await conn.query(sql, [book.title, book.total_pages, book.author, book.type, book.summary]);
             const bookItem = result.rows[0]
             conn.release;

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
 
-dotenv.config;
+dotenv.config();
 
 const {
     pgHost,
@@ -23,7 +23,8 @@ if (ENV === 'dev') {
         password: pgPassword,
         port: 5432
     });
-} else {
+} 
+if (ENV === 'test') {
     client = new Pool ({
         host: pgHost,
         database: pgDatabaseTest,
