@@ -9,19 +9,19 @@ dotenv_1.default.config;
 const { pgHost, pgDatabase, pgDatabaseTest, pgUser, pgPassword, ENV } = process.env;
 let client = new pg_1.Pool();
 console.log(ENV);
-if (ENV === 'test') {
+if (ENV === 'dev') {
     client = new pg_1.Pool({
         host: pgHost,
-        database: pgDatabaseTest,
+        database: pgDatabase,
         user: pgUser,
         password: pgPassword,
         port: 5432
     });
 }
-if (ENV === 'dev') {
+else {
     client = new pg_1.Pool({
         host: pgHost,
-        database: pgDatabase,
+        database: pgDatabaseTest,
         user: pgUser,
         password: pgPassword,
         port: 5432

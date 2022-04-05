@@ -43,5 +43,18 @@ class bookStore {
             throw new Error(`Can not add a new book: ${error}`);
         }
     }
+    async delete(id) {
+        try {
+            const sql = 'DELETE FROM books WHERE id=($1)';
+            const conn = await database_1.default.connect();
+            const result = await conn.query(sql, [id]);
+            const book = result.rows[0];
+            conn.release();
+            return book;
+        }
+        catch (err) {
+            throw new Error(`Could not delete book ${id}. Error: ${err}`);
+        }
+    }
 }
 exports.bookStore = bookStore;

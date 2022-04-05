@@ -15,7 +15,15 @@ const {
 let client: Pool = new Pool();
 console.log(ENV);
 
-if (ENV === 'test') {
+if (ENV === 'dev') {
+    client = new Pool ({
+        host: pgHost,
+        database: pgDatabase,
+        user: pgUser,
+        password: pgPassword,
+        port: 5432
+    });
+} else {
     client = new Pool ({
         host: pgHost,
         database: pgDatabaseTest,
@@ -25,13 +33,4 @@ if (ENV === 'test') {
     });
 }
 
-if (ENV === 'dev') {
-    client = new Pool ({
-        host: pgHost,
-        database: pgDatabase,
-        user: pgUser,
-        password: pgPassword,
-        port: 5432
-    });
-}
 export default client
