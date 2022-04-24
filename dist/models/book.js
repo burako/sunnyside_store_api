@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.bookStore = void 0;
 const database_1 = __importDefault(require("../database"));
 class bookStore {
-    async getAllBooks() {
+    async index() {
         try {
             const conn = await database_1.default.connect();
             const sql = 'SELECT * FROM books';
@@ -30,7 +30,7 @@ class bookStore {
             throw new Error(`Could not find book ${id}. Error: ${err}`);
         }
     }
-    async addNewBook(book) {
+    async create(book) {
         try {
             const conn = await database_1.default.connect();
             const sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES($1, $2, $3, $4, $5) RETURNING *';

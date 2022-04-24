@@ -4,11 +4,11 @@ const store = new bookStore();
 
 describe('book model for the library database', () => {
     it('should have a getAll method', () => {
-        expect(store.getAllBooks).toBeDefined();
+        expect(store.index).toBeDefined();
     });
 
     it('should add a book', async () => {
-        const result = await store.addNewBook({
+        const result = await store.create({
           title: 'Bridge to Terabithia',
           total_pages: 250,
           author: 'Katherine Paterson',
@@ -26,7 +26,7 @@ describe('book model for the library database', () => {
       });
 
       it('should return a list of books', async () => {
-        const result = await store.getAllBooks();
+        const result = await store.index();
         expect(result).toEqual([{
           id: 1,
           title: 'Bridge to Terabithia',
@@ -51,7 +51,7 @@ describe('book model for the library database', () => {
     
       it('should remove the book', async () => {
         store.delete("1");
-        const result = await store.getAllBooks()
+        const result = await store.index()
     
         expect(result).toEqual([]);
       });

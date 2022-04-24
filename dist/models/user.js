@@ -15,7 +15,7 @@ class userClass {
             const conn = await database_1.default.connect();
             const sql = 'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *';
             const hash = bcrypt_1.default.hashSync(user.password_digest + pepper, parseInt(saltRounds));
-            const result = await conn.query(sql, [user.username, user.password_digest]);
+            const result = await conn.query(sql, [user.username, hash]);
             const userItem = result.rows[0];
             conn.release;
             return userItem;
@@ -36,7 +36,6 @@ class userClass {
                     return user;
                 }
             }
-            conn.release;
             return null;
         }
         catch (err) {

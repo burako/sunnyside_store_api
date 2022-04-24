@@ -10,7 +10,7 @@ export type Book = {
 }
 
 export class bookStore {
-    async getAllBooks() : Promise<Book[]> {
+    async index() : Promise<Book[]> {
         try {
             const conn = await client.connect();
             const sql = 'SELECT * FROM books';
@@ -35,7 +35,7 @@ export class bookStore {
         }
       }
 
-    async addNewBook(book: Book) : Promise<Book> {
+    async create(book: Book) : Promise<Book> {
         try {
             const conn = await client.connect();
             const sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES($1, $2, $3, $4, $5) RETURNING *';
