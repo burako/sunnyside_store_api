@@ -27,6 +27,16 @@ const show = async (_req, res) => {
 };
 const create = async (_req, res) => {
     try {
+        const authorizationHeader = _req.headers.authorization;
+        const token = authorizationHeader.split(' ')[1];
+        jsonwebtoken_1.default.verify(token, process.env.jwtSecret);
+    }
+    catch (err) {
+        res.status(401);
+        res.json('Access denied, invalid token');
+        return;
+    }
+    try {
         const book = {
             title: _req.body.title,
             author: _req.body.author,
