@@ -27,6 +27,18 @@ export class userClass {
         }
     }
 
+    async index() : Promise<User[]> {
+        try {
+            const conn = await client.connect();
+            const sql = 'SELECT * FROM users';
+            const result = await conn.query(sql);
+            conn.release;
+            return result.rows;
+        } catch (error) {
+            throw new Error(`Can not get all users: ${error}`);
+        }
+    }
+
     async authenticate (username: string, password: string) : Promise<User | null> {
         try {
             const conn = await client.connect();

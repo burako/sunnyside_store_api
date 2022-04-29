@@ -1,6 +1,7 @@
 import {userClass, User } from "../models/user";
 import express, {Request, Response} from "express";
 import jwt, { Secret } from "jsonwebtoken";
+import verifyAuthToken from "../utilities/verifyAuth";
 
 const user = new userClass();
 
@@ -13,6 +14,15 @@ const create = async (req: Request, res: Response) => {
         const newUser = await user.create(userItem);
         const token = jwt.sign({user: newUser}, <Secret> process.env.jwtSecret);
         res.json(token);
+    } catch (error) {
+        res.json(error);
+    }
+}
+
+const index = async (_req: Request, res: Response) => {
+    try {
+        const users = await user.index();
+        res.json(users);
     } catch (error) {
         res.json(error);
     }
@@ -63,6 +73,7 @@ const update = async (req: Request, res: Response) => {
 
 const userRoutes = (app: express.Application) => {
     app.post('/users', create);
+    app.get('/users',verifyAuthToken, index);
     app.post('/users/auth', authenticate);
     app.post('/users/update', update);
 }
