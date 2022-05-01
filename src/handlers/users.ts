@@ -9,7 +9,9 @@ const create = async (req: Request, res: Response) => {
     try {
         const userItem : User = {
             username: req.body.username,
-            password_digest: req.body.password_digest
+            password_digest: req.body.password_digest,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
         }
         const newUser = await user.create(userItem);
         const token = jwt.sign({user: newUser}, <Secret> process.env.jwtSecret);
@@ -28,9 +30,18 @@ const index = async (_req: Request, res: Response) => {
     }
 }
 
+const show = async (req: Request, res: Response) => {
+    try {
+        const userItem = await user.show(req.params.id);
+        res.json(userItem);
+    } catch (error) {
+        res.json(error);
+    }
+}
+
 const authenticate = async (req: Request, res: Response) => {
     try {
-        const userItem : User = {
+        const userItem = {
             username: req.body.username,
             password_digest: req.body.password_digest
         }
@@ -49,6 +60,8 @@ const update = async (req: Request, res: Response) => {
         id: parseInt(req.params.id),
         username: req.body.username,
         password_digest: req.body.password_digest,
+        firstName: req.body.firstName,
+        lastName:  req.body.lastName
     }
     try {
         const authorizationHeader = req.headers.authorization
@@ -74,8 +87,9 @@ const update = async (req: Request, res: Response) => {
 const userRoutes = (app: express.Application) => {
     app.post('/users', create);
     app.get('/users',verifyAuthToken, index);
+    app.get('/user/:id', verifyAuthToken, show);
     app.post('/users/auth', authenticate);
-    app.post('/users/update', update);
+    app.post('/users/update', verifyAuthToken, update);
 }
 
 export default userRoutes;

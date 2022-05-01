@@ -1,5 +1,6 @@
 import { Order, orderStore } from "../models/order";
 import express, {Request, Response} from "express";
+import verifyAuthToken from "../utilities/verifyAuth";
 
 const store = new orderStore();
 
@@ -51,11 +52,37 @@ const addProduct = async (_req: Request, res: Response) => {
   }
 }
 
+const openOrdersByUser = async (_req: Request, res: Response) => {
+  const userId: string = _req.params.id;
+  try {
+    const orders = await store.openOrdersByUser(userId);
+    res.json(orders);
+  }
+  catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+}
+const completedOrdersByUser = async (_req: Request, res: Response) => {
+  const userId: string = _req.params.id;
+  try {
+    const orders = await store.completedOrdersByUser(userId);
+    res.json(orders);
+  }
+  catch (err) {
+    res.status(400);
+    res.json(err);
+  }
+}
+
+
 const orderRoutes = (app: express.Application) => {
-    app.get("/orders", index);
-    app.post("/order", create);
-    app.get("/order/:id", show);
-    app.post("/order/:id/product", addProduct);
+    app.get("/orders", verifyAuthToken, index);
+    app.post("/order", verifyAuthToken, create);
+    app.get("/order/:id", verifyAuthToken, show);
+    app.post("/order/:id/product", verifyAuthToken, addProduct);
+    app.get("/orders/user/:id/open", verifyAuthToken, openOrdersByUser);
+    app.get("/orders/user/:id/completed", verifyAuthToken, completedOrdersByUser);
 }
 
 export  default orderRoutes;

@@ -59,4 +59,43 @@ export class orderStore {
             throw new Error(`Can not add a new product to the order: ${error}`);
         }
     }
+
+    async openOrdersByUser(userId: string) : Promise<Order[]> {
+        try {
+            const conn = await client.connect();
+            const sql = 'SELECT * FROM orders INNER JOIN orders_products ON orders_products.order_id=orders.id WHERE orders.user_id=($1) AND orders.order_status=($2)';
+            const orders = await conn.query(sql, [userId, "open"]);
+            
+            conn.release;
+            return orders.rows;
+        } catch (error) {
+            throw new Error(`Can not get all open orders: ${error}`);
+        }
+    }
+
+    async completedOrdersByUser(userId: string) : Promise<Order[]> {
+        try {
+            const conn = await client.connect();
+            const sql = 'SELECT * FROM orders WHERE user_id=($1) AND order_status=($2)';
+            const orders = await conn.query(sql, [userId, "closed"]);
+            orders.rows.forEach(async (order) => {
+                const orderId = order.id;
+
+                try {
+                    const sql = 'SELECT product_id, quantity FROM orders_products WHERE order_id=($1)';
+                    const products = await conn.query(sql, [orderId]);
+                    order.products = products.rows;
+                    console.log(order);
+                } catch (error) {
+                    throw new Error(`Can not get all products for order ${orderId}. Error: ${error}`);
+                }
+                
+            });
+
+            conn.release;
+            return orders.rows;
+        } catch (error) {
+            throw new Error(`Can not get all completed orders: ${error}`);
+        }
+    }
 }

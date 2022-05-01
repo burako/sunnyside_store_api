@@ -4,5 +4,6 @@ CREATE TABLE products (
   description text NOT NULL,
   price integer NOT NULL,
   created_at timestamp with time zone NOT NULL,
-  updated_at timestamp with time zone NOT NULL
+  updated_at timestamp with time zone NOT NULL,
+  category varchar(255),
 );

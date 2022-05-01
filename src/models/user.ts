@@ -9,16 +9,18 @@ export type User = {
     id?: number;
     username: string;
     password_digest: string;
+    firstName: string;
+    lastName: string;
 }
 
 export class userClass {
     async create(user: User) : Promise<User> {
         try {
             const conn = await client.connect();
-            const sql = 'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *';
+            const sql = 'INSERT INTO users (username, password_digest, first_name, last_name) VALUES($1, $2, $3, $4) RETURNING *';
             const hash = bycrypt.hashSync(user.password_digest + pepper, parseInt(saltRounds as string));
 
-            const result = await conn.query(sql, [user.username, hash]);
+            const result = await conn.query(sql, [user.username, hash, user.firstName, user.lastName]);
             const userItem = result.rows[0];
             conn.release;
             return userItem;
@@ -36,6 +38,18 @@ export class userClass {
             return result.rows;
         } catch (error) {
             throw new Error(`Can not get all users: ${error}`);
+        }
+    }
+
+    async show(id: string): Promise<User> {
+        try {
+        const sql = 'SELECT * FROM users WHERE id=($1)';
+        const conn = await client.connect();
+        const result = await conn.query(sql, [id]);
+        conn.release();
+        return result.rows[0];
+        } catch (err) {
+            throw new Error(`Could not find user ${id}. Error: ${err}`);
         }
     }
 
