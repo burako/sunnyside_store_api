@@ -9,8 +9,8 @@ export type User = {
     id?: number;
     username: string;
     password_digest: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
 }
 
 export class userClass {
@@ -20,7 +20,7 @@ export class userClass {
             const sql = 'INSERT INTO users (username, password_digest, first_name, last_name) VALUES($1, $2, $3, $4) RETURNING *';
             const hash = bycrypt.hashSync(user.password_digest + pepper, parseInt(saltRounds as string));
 
-            const result = await conn.query(sql, [user.username, hash, user.firstName, user.lastName]);
+            const result = await conn.query(sql, [user.username, hash, user.first_name, user.last_name]);
             const userItem = result.rows[0];
             conn.release;
             return userItem;

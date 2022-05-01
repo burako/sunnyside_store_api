@@ -6,13 +6,14 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop library_test",
+    "test": "export ENV=test && db-migrate --env test up && jasmine-ts && db-migrate db:drop library_test",
     "tsc": "tsc"
   },
   "author": "Udacity",
   "license": "ISC",
   "dependencies": {
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/supertest": "^2.0.12",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "db-migrate": "^0.11.13",
@@ -33,6 +34,7 @@
     "jasmine": "^3.6.4",
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
+    "supertest": "^6.2.3",
     "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9"
   }

@@ -1,5 +1,5 @@
 import { Book, bookStore } from "../book";
-
+/*
 const store = new bookStore();
 
 describe('book model for the library database', () => {
@@ -56,3 +56,4 @@ describe('book model for the library database', () => {
         expect(result).toEqual([]);
       });
 });
+*/
