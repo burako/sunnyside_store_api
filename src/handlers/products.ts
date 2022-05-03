@@ -44,9 +44,9 @@ const getProductsByCategory = async (_req: Request, res: Response) => {
 
 const productRoutes = (app: express.Application) => {
     app.get("/products", index);
-    app.post("/product", verifyAuthToken, create);
-    app.get("/product/:id", show);
-    app.get("/products/:category", getProductsByCategory);
+    app.post("/products", verifyAuthToken, create);
+    app.get("/products/:id", show);
+    app.get("/products/category/:category", getProductsByCategory);
 }
 
 export default productRoutes;

@@ -29,6 +29,19 @@ export class userClass {
         }
     }
 
+    async destroy(id: string) : Promise<User> {
+        try {
+            const conn = await client.connect();
+            const sql = 'DELETE FROM users WHERE id=($1) RETURNING *';
+            const result = await conn.query(sql, [id]);
+            const userItem = result.rows[0];
+            conn.release;
+            return userItem;
+        } catch (error) {
+            throw new Error(`Can not delete user: ${error}`);
+        }
+    }
+
     async index() : Promise<User[]> {
         try {
             const conn = await client.connect();
