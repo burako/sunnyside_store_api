@@ -22,7 +22,7 @@ const index = async (_req, res) => {
     res.json(books);
 };
 const show = async (_req, res) => {
-    const book = await store.show(_req.body.id);
+    const book = await store.show(_req.params.id);
     res.json(book);
 };
 const create = async (_req, res) => {

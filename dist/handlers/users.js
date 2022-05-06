@@ -5,16 +5,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const verifyAuth_1 = __importDefault(require("../utilities/verifyAuth"));
 const user = new user_1.userClass();
 const create = async (req, res) => {
     try {
         const userItem = {
             username: req.body.username,
-            password_digest: req.body.password_digest
+            password_digest: req.body.password_digest,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
         };
         const newUser = await user.create(userItem);
-        const token = jsonwebtoken_1.default.sign({ user: newUser }, process.env.jwtSecret);
+        const token = await jsonwebtoken_1.default.sign({ user: newUser }, process.env.jwtSecret);
         res.json(token);
+    }
+    catch (error) {
+        res.json(error);
+    }
+};
+const index = async (_req, res) => {
+    try {
+        const users = await user.index();
+        res.json(users);
+    }
+    catch (error) {
+        res.json(error);
+    }
+};
+const show = async (req, res) => {
+    try {
+        const userItem = await user.show(req.params.id);
+        res.json(userItem);
     }
     catch (error) {
         res.json(error);
@@ -34,37 +55,10 @@ const authenticate = async (req, res) => {
         res.json(error);
     }
 };
-// enabling each user to edit only their own information by comparing the id from jwt with the one from the request
-const update = async (req, res) => {
-    const userItem = {
-        id: parseInt(req.params.id),
-        username: req.body.username,
-        password_digest: req.body.password_digest,
-    };
-    try {
-        const authorizationHeader = req.headers.authorization;
-        const token = authorizationHeader.split(' ')[1];
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.jwtSecret);
-        if (decoded.id !== userItem.id) {
-            throw new Error('User id does not match!');
-        }
-    }
-    catch (err) {
-        res.status(401);
-        res.json(err);
-        return;
-    }
-    try {
-        const updated = await user.create(userItem);
-        res.json(updated);
-    }
-    catch (err) {
-        res.status(400);
-    }
-};
 const userRoutes = (app) => {
     app.post('/users', create);
+    app.get('/users', verifyAuth_1.default, index);
+    app.get('/users/:id', verifyAuth_1.default, show);
     app.post('/users/auth', authenticate);
-    app.post('/users/update', update);
 };
 exports.default = userRoutes;
