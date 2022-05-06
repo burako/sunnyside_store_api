@@ -47,11 +47,11 @@ export class orderStore {
         }
     }
 
-    async addProduct(orderId: string, productId: string, quantity: number) : Promise<Order> {
+    async addProduct(order_id: string, product_id: string, quantity: number) : Promise<{order_id: number, product_id: number, quantity: number}> {
         try {
             const conn = await client.connect();
             const sql = 'INSERT INTO orders_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
-            const result = await conn.query(sql, [orderId, productId, quantity]);
+            const result = await conn.query(sql, [order_id, product_id, quantity]);
             const orderItem = result.rows[0]
             conn.release;
             return orderItem;
@@ -76,21 +76,8 @@ export class orderStore {
     async completedOrdersByUser(userId: string) : Promise<Order[]> {
         try {
             const conn = await client.connect();
-            const sql = 'SELECT * FROM orders WHERE user_id=($1) AND order_status=($2)';
+            const sql = 'SELECT * FROM orders INNER JOIN orders_products ON orders_products.order_id=orders.id WHERE orders.user_id=($1) AND orders.order_status=($2)';
             const orders = await conn.query(sql, [userId, "closed"]);
-            orders.rows.forEach(async (order) => {
-                const orderId = order.id;
-
-                try {
-                    const sql = 'SELECT product_id, quantity FROM orders_products WHERE order_id=($1)';
-                    const products = await conn.query(sql, [orderId]);
-                    order.products = products.rows;
-                    console.log(order);
-                } catch (error) {
-                    throw new Error(`Can not get all products for order ${orderId}. Error: ${error}`);
-                }
-                
-            });
 
             conn.release;
             return orders.rows;

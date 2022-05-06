@@ -78,9 +78,9 @@ const completedOrdersByUser = async (_req: Request, res: Response) => {
 
 const orderRoutes = (app: express.Application) => {
     app.get("/orders", verifyAuthToken, index);
-    app.post("/order", verifyAuthToken, create);
-    app.get("/order/:id", verifyAuthToken, show);
-    app.post("/order/:id/product", verifyAuthToken, addProduct);
+    app.post("/orders", verifyAuthToken, create);
+    app.get("/orders/:id", verifyAuthToken, show);
+    app.post("/orders/:id/addproduct", verifyAuthToken, addProduct);
     app.get("/orders/user/:id/open", verifyAuthToken, openOrdersByUser);
     app.get("/orders/user/:id/completed", verifyAuthToken, completedOrdersByUser);
 }
