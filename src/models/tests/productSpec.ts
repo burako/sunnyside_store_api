@@ -86,11 +86,10 @@ describe("product endpoint test for the storefront API", () => {
             last_name: "test"
         }).set("Accept", "application/json");
         productToken = newUser.body;
-        //const coded = productToken.split(' ');
+        
         const decoded : {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number} = jwt.verify(productToken, <Secret> process.env.jwtSecret) as {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number};
-        //console.log('user id is: ', decoded.user.id);
         userId = decoded.user.id.toString();
-        console.log('beforeall user id: ', userId);
+        //console.log('beforeall user id: ', userId);
     });
 
     it("should create a new product on -> POST /products", async () => {
@@ -120,7 +119,7 @@ describe("product endpoint test for the storefront API", () => {
 
     afterAll(async () => {
         const result = await UserStore.destroy(userId);
-        console.log('afterall user id: ', userId);
+        //console.log('afterall user id: ', userId);
     });
 
 });
