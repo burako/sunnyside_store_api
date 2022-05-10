@@ -1,8 +1,11 @@
 import { productStore, Product } from "../product";
+import { userClass } from "../user";
 import supertest from "supertest";
 import app from "../../server";
-/*
+import jwt, { Secret } from "jsonwebtoken";
+
 const ProductStore = new productStore();
+const UserStore = new userClass();
 
 describe("product model test for the storefront API", () => {
     it("create() should add a new product", async () => {
@@ -73,6 +76,7 @@ describe("product model test for the storefront API", () => {
 describe("product endpoint test for the storefront API", () => {
     const request = supertest(app);
     let productToken : string;
+    let userId: string
 
     beforeAll(async () => {
         const newUser = await request.post("/users").send({
@@ -82,6 +86,11 @@ describe("product endpoint test for the storefront API", () => {
             last_name: "test"
         }).set("Accept", "application/json");
         productToken = newUser.body;
+        //const coded = productToken.split(' ');
+        const decoded : {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number} = jwt.verify(productToken, <Secret> process.env.jwtSecret) as {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number};
+        //console.log('user id is: ', decoded.user.id);
+        userId = decoded.user.id.toString();
+        console.log('beforeall user id: ', userId);
     });
 
     it("should create a new product on -> POST /products", async () => {
@@ -109,5 +118,9 @@ describe("product endpoint test for the storefront API", () => {
         expect(response.body.name).toEqual("test2");
     });
 
+    afterAll(async () => {
+        const result = await UserStore.destroy(userId);
+        console.log('afterall user id: ', userId);
+    });
+
 });
-*/

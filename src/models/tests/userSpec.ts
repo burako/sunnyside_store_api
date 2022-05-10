@@ -1,7 +1,7 @@
 import { userClass, User } from "../user";
 import supertest from "supertest";
 import app from "../../server";
-/*
+
 const userStore = new userClass();
 
 describe("user model test for the storefront API", () => {
@@ -89,4 +89,3 @@ describe("user endpoint test for the storefront API", () => {
     });
 
 });
-*/
