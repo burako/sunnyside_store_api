@@ -27,8 +27,9 @@
     The server runs on port 3000.
     Run 'npm run start' to start the server
 
-4. Run jasmine tests with > npm run test
-    4.1. Note on jasmine tests: I have had an issue with jasmine when running multiple spec files. There are 3 specs under models folder, per each model. When run individually (by commenting out the contents of other files) every test in each spec files pass. But when I run them all, I receive a timeout error. I raised this issue here: https://knowledge.udacity.com/questions/841229 but unfortunately mentors were not able to resolve the issue neither.
+### Run jasmine tests 
+    run 'npm run test'
+    Note on jasmine tests: I have had an issue with jasmine when running multiple spec files. There are 3 specs under models folder, per each model. When run individually (by commenting out the contents of other files) every test in each spec files pass. But when I run them all, I receive a timeout error. I raised this issue here: https://knowledge.udacity.com/questions/841229 but unfortunately mentors were not able to resolve the issue neither.
 
 ### content of .env
 .env
