@@ -5,13 +5,23 @@ import verifyAuthToken from "../utilities/verifyAuth";
 const store = new productStore();
 
 const index = async (_req: Request, res: Response) => {
-    const products = await store.index();
-    res.json(products);
+    try {
+        const products = await store.index();
+        res.json(products);
+    } catch (error) {
+        res.json(error);
+        res.status(400);
+    }
 }
 
 const show = async (_req: Request, res: Response) => {
-    const product = await store.show(_req.params.id);
-    res.json(product);
+    try {
+        const product = await store.show(_req.params.id);
+        res.json(product);
+    } catch (error) {
+        res.json(error);
+        res.status(400);
+    }
 }
 
 const create = async (_req: Request, res: Response) => {

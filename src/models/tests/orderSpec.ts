@@ -1,10 +1,17 @@
 import { orderStore, Order } from "../order";
 import supertest from "supertest";
 import app from "../../server";
-/*
+import jwt, { Secret } from "jsonwebtoken";
+import { userClass } from "../../models/user";
+import { productStore } from "../product";
+
+const UserStore = new userClass();
+const ProductStore = new productStore();
 const OrderStore = new orderStore();
 const request = supertest(app);
 let orderToken : string;
+let userId: string;
+let productId: string;
 
 describe("order model test for the storefront API", () => {
 
@@ -18,12 +25,16 @@ describe("order model test for the storefront API", () => {
         }).set("Accept", "application/json");
         orderToken = newUser.body;
 
+        const decoded : {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number} = jwt.verify(orderToken, <Secret> process.env.jwtSecret) as {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number};
+        userId = decoded.user.id.toString();
+
         const newProduct = await request.post("/products").send({
             name: "ordertest",
             description: "testing orders",
             price: 12,
             category: "ordertest"
         }).set("Accept", "application/json").set("Authorization", `Bearer ${orderToken}`);
+        productId = newProduct.body.id;
     });
 
     it("create() should add a new order", async () => {
@@ -97,5 +108,9 @@ describe("order endpoint test for the storefront API", () => {
         const result = await request.get("/orders/user/1/open").set("Accept", "application/json").set("Authorization", `Bearer ${orderToken}`);
         expect(result.status).toBe(200);
     });
+
+    afterAll(async () => {
+        const deleteUser = await UserStore.destroy(userId);
+        const deleteProduct = await ProductStore.destroy(productId);
+    });
 });
-*/

@@ -43,6 +43,19 @@ class productStore {
             throw new Error(`Can not add a new product: ${error}`);
         }
     }
+    async destroy(id) {
+        try {
+            const conn = await database_1.default.connect();
+            const sql = 'DELETE FROM products WHERE id=($1) RETURNING *';
+            const result = await conn.query(sql, [id]);
+            const productItem = result.rows[0];
+            conn.release;
+            return productItem;
+        }
+        catch (error) {
+            throw new Error(`Can not delete product: ${error}`);
+        }
+    }
     async getProductsByCategory(category) {
         try {
             const conn = await database_1.default.connect();

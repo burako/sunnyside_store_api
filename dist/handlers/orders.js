@@ -7,12 +7,24 @@ const order_1 = require("../models/order");
 const verifyAuth_1 = __importDefault(require("../utilities/verifyAuth"));
 const store = new order_1.orderStore();
 const index = async (_req, res) => {
-    const orders = await store.index();
-    res.json(orders);
+    try {
+        const orders = await store.index();
+        res.json(orders);
+    }
+    catch (error) {
+        res.json(error);
+        res.status(400);
+    }
 };
 const show = async (_req, res) => {
-    const order = await store.show(_req.body.id);
-    res.json(order);
+    try {
+        const order = await store.show(_req.body.id);
+        res.json(order);
+    }
+    catch (error) {
+        res.json(error);
+        res.status(400);
+    }
 };
 const create = async (_req, res) => {
     try {
