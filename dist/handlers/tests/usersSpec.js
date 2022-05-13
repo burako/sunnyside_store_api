@@ -10,8 +10,8 @@ describe("user endpoint test for the storefront API", () => {
     let token;
     it("should create a new user on -> POST /users", async () => {
         const response = await request.post("/users").send({
-            username: "usertest2",
-            password_digest: "usertest2",
+            username: "usertest",
+            password_digest: "usertest",
             first_name: "test",
             last_name: "test"
         }).set("Accept", "application/json");
@@ -24,12 +24,12 @@ describe("user endpoint test for the storefront API", () => {
     });
     it("should return the correct user on -> GET /users/:id", async () => {
         const response = await request.get("/users/2").set("Authorization", `Bearer ${token}`);
-        expect(response.body.username).toEqual("usertest2");
+        expect(response.body.username).toEqual("usertest");
     });
     it("should authenticate a user on -> POST /users/auth", async () => {
         const response = await request.post("/users/auth").send({
-            username: "test",
-            password_digest: "usertest2"
+            username: "usertest",
+            password_digest: "usertest"
         }).set("Accept", "application/json");
         expect(response.status).toBe(200);
     });

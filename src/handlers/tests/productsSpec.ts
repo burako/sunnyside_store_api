@@ -27,12 +27,12 @@ describe("products spec endpoint test for the storefront API", () => {
 
     it("should create a new product on -> POST /products", async () => {
         const response = await request.post("/products").send({
-            name: "test2",
-            description: "test2",
-            price: 12,
-            category: "test2"
+            name: "test",
+            description: "test",
+            price: 1,
+            category: "test"
         }).set("Accept", "application/json").set("Authorization", `Bearer ${productToken}`);
-        expect(response.body.price).toEqual(12);
+        expect(response.body.price).toEqual(1);
     });
 
     it("should return a list of all products on -> GET /products", async () => {
@@ -46,8 +46,8 @@ describe("products spec endpoint test for the storefront API", () => {
     });
 
     it("should return the correct product on -> GET /products/:id", async () => {
-        const response = await request.get("/products/2").set("Authorization", `Bearer ${productToken}`);
-        expect(response.body.name).toEqual("test2");
+        const response = await request.get("/products/1").set("Authorization", `Bearer ${productToken}`);
+        expect(response.body.name).toEqual("test");
     });
 
     afterAll(async () => {

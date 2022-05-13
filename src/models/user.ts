@@ -22,7 +22,7 @@ export class userClass {
 
             const result = await conn.query(sql, [user.username, hash, user.first_name, user.last_name]);
             const userItem = result.rows[0];
-            conn.release;
+            conn.release();
             return userItem;
         } catch (error) {
             throw new Error(`Can not create a new user: ${error}`);
@@ -35,7 +35,7 @@ export class userClass {
             const sql = 'DELETE FROM users WHERE id=($1) RETURNING *';
             const result = await conn.query(sql, [id]);
             const userItem = result.rows[0];
-            conn.release;
+            conn.release();
             return userItem;
         } catch (error) {
             throw new Error(`Can not delete user: ${error}`);
@@ -47,7 +47,7 @@ export class userClass {
             const conn = await client.connect();
             const sql = 'SELECT * FROM users';
             const result = await conn.query(sql);
-            conn.release;
+            conn.release();
             return result.rows;
         } catch (error) {
             throw new Error(`Can not get all users: ${error}`);
@@ -74,7 +74,7 @@ export class userClass {
             if (result.rows.length) {
                 const user = result.rows[0];
                 if (bycrypt.compareSync(password + pepper, user.password_digest)) {
-                    conn.release;
+                    conn.release();
                     return user;
                 }
             }

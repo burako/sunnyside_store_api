@@ -11,7 +11,7 @@ class productStore {
             const conn = await database_1.default.connect();
             const sql = 'SELECT * FROM products';
             const result = await conn.query(sql);
-            conn.release;
+            conn.release();
             return result.rows;
         }
         catch (error) {
@@ -36,7 +36,7 @@ class productStore {
             const sql = 'INSERT INTO products (name, price, description, category, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *';
             const result = await conn.query(sql, [product.name, product.price, product.description, product.category, product.created_at, product.updated_at]);
             const productItem = result.rows[0];
-            conn.release;
+            conn.release();
             return productItem;
         }
         catch (error) {
@@ -49,7 +49,7 @@ class productStore {
             const sql = 'DELETE FROM products WHERE id=($1) RETURNING *';
             const result = await conn.query(sql, [id]);
             const productItem = result.rows[0];
-            conn.release;
+            conn.release();
             return productItem;
         }
         catch (error) {
@@ -61,7 +61,7 @@ class productStore {
             const conn = await database_1.default.connect();
             const sql = 'SELECT * FROM products WHERE category=($1)';
             const result = await conn.query(sql, [category]);
-            conn.release;
+            conn.release();
             return result.rows;
         }
         catch (error) {

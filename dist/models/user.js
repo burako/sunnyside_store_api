@@ -17,7 +17,7 @@ class userClass {
             const hash = bcrypt_1.default.hashSync(user.password_digest + pepper, parseInt(saltRounds));
             const result = await conn.query(sql, [user.username, hash, user.first_name, user.last_name]);
             const userItem = result.rows[0];
-            conn.release;
+            conn.release();
             return userItem;
         }
         catch (error) {
@@ -30,7 +30,7 @@ class userClass {
             const sql = 'DELETE FROM users WHERE id=($1) RETURNING *';
             const result = await conn.query(sql, [id]);
             const userItem = result.rows[0];
-            conn.release;
+            conn.release();
             return userItem;
         }
         catch (error) {
@@ -42,7 +42,7 @@ class userClass {
             const conn = await database_1.default.connect();
             const sql = 'SELECT * FROM users';
             const result = await conn.query(sql);
-            conn.release;
+            conn.release();
             return result.rows;
         }
         catch (error) {
@@ -69,7 +69,7 @@ class userClass {
             if (result.rows.length) {
                 const user = result.rows[0];
                 if (bcrypt_1.default.compareSync(password + pepper, user.password_digest)) {
-                    conn.release;
+                    conn.release();
                     return user;
                 }
             }

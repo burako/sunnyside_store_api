@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../user");
 const userStore = new user_1.userClass();
+let userId;
 describe("user model test for the storefront API", () => {
     it("create() should add a new user", async () => {
         const result = await userStore.create({
-            username: "usertest1",
-            password_digest: "usertest1",
+            username: "usertest",
+            password_digest: "usertest",
             first_name: "test",
             last_name: "test"
         });
@@ -16,7 +17,7 @@ describe("user model test for the storefront API", () => {
             last_name: result.last_name
         };
         expect(testUser).toEqual({
-            username: "usertest1",
+            username: "usertest",
             first_name: "test",
             last_name: "test"
         });
@@ -29,20 +30,21 @@ describe("user model test for the storefront API", () => {
             last_name: result[0].last_name
         };
         expect(testUser).toEqual({
-            username: "usertest1",
+            username: "usertest",
             first_name: "test",
             last_name: "test"
         });
+        userId = result[0].id;
     });
     it("show() should return the correct user", async () => {
-        const result = await userStore.show("1");
+        const result = await userStore.show(userId);
         const testUser = {
             username: result.username,
             first_name: result.first_name,
             last_name: result.last_name
         };
         expect(testUser).toEqual({
-            username: "usertest1",
+            username: "usertest",
             first_name: "test",
             last_name: "test"
         });

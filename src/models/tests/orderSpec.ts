@@ -11,6 +11,7 @@ const OrderStore = new orderStore();
 const request = supertest(app);
 let orderToken : string;
 let userId: string;
+let userIdAsNumber: number;
 let productId: string;
 
 describe("order model test for the storefront API", () => {
@@ -27,6 +28,7 @@ describe("order model test for the storefront API", () => {
 
         const decoded : {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number} = jwt.verify(orderToken, <Secret> process.env.jwtSecret) as {user: {id: number, username: string, password: string, firstname: string, lastname: string}, iat: number};
         userId = decoded.user.id.toString();
+        userIdAsNumber = decoded.user.id;
 
         const newProduct = await request.post("/products").send({
             name: "ordertest",
@@ -39,7 +41,7 @@ describe("order model test for the storefront API", () => {
 
     it("create() should add a new order", async () => {
         const result = await OrderStore.create({
-            user_id: 1,
+            user_id: userIdAsNumber,
             created_at: new Date(),
             updated_at: new Date(),
             order_status: "open"
@@ -49,7 +51,7 @@ describe("order model test for the storefront API", () => {
             order_status: result.order_status
         }
         expect(testOrder).toEqual({
-            user_id: 1,
+            user_id: userIdAsNumber,
             order_status: "open"
         });
     });
@@ -61,7 +63,7 @@ describe("order model test for the storefront API", () => {
             order_status: result[0].order_status
         }
         expect(testOrder).toEqual({
-            user_id: 1,
+            user_id: userIdAsNumber,
             order_status: "open"
         });
     });
@@ -73,7 +75,7 @@ describe("order model test for the storefront API", () => {
             order_status: result.order_status
         }
         expect(testOrder).toEqual({
-            user_id: 1,
+            user_id: userIdAsNumber,
             order_status: "open"
         });
     });
@@ -93,7 +95,7 @@ describe("order model test for the storefront API", () => {
     });
 
     it("openOrdersByUser() should return open orders", async () => {
-        const result = await OrderStore.openOrdersByUser("1");
+        const result = await OrderStore.openOrdersByUser(userId);
         const testOrder = {
             order_status: result[0].order_status
         }
@@ -105,12 +107,9 @@ describe("order model test for the storefront API", () => {
 
 describe("order endpoint test for the storefront API", () => {
     it("/orders/user/:id/open should return open orders for a specific user", async () => {
-        const result = await request.get("/orders/user/1/open").set("Accept", "application/json").set("Authorization", `Bearer ${orderToken}`);
+        const endpoint = `/orders/user/${userId}/open`;
+        const result = await request.get(endpoint).set("Accept", "application/json").set("Authorization", `Bearer ${orderToken}`);
         expect(result.status).toBe(200);
     });
 
-    afterAll(async () => {
-        const deleteUser = await UserStore.destroy(userId);
-        const deleteProduct = await ProductStore.destroy(productId);
-    });
 });
