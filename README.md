@@ -1,4 +1,4 @@
-# Storefront Backend Project
+# Storefront Backend API on node, express and postgres
 
 ## Instructions for running the project
 
@@ -29,17 +29,3 @@
 
 ### Run jasmine tests 
     run 'npm run test'
-    Note on jasmine tests: I have had an issue with jasmine when running multiple spec files. There are 3 specs under models folder, per each model. When run individually (by commenting out the contents of other files) every test in each spec files pass. But when I run them all, I receive a timeout error. I raised this issue here: https://knowledge.udacity.com/questions/841229 but unfortunately mentors were not able to resolve the issue neither.
-
-### content of .env
-.env
-
-    pgHost=localhost
-    pgDatabase=library
-    pgDatabaseTest=library_test
-    pgUser=postgres
-    pgPassword=docker
-    ENV=dev
-    bycrypt_password=agack4k4n
-    salt_rounds=10
-    jwtSecret= kawabanga
